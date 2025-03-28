@@ -50,9 +50,14 @@ const getContact = asyncHandler (async (req, res) => {
         throw new Error("no such contact");
     }
     const contact = await Contact.findById(id);
-    if(contact){
-        res.status(200).json(contact)
+
+    if (!contact) {
+        res.status(404);
+        throw new Error("no such contact")
     }
+
+    res.status(200).json(contact)
+
 })
 
 //@desc Update contact
@@ -60,21 +65,32 @@ const getContact = asyncHandler (async (req, res) => {
 //access public
 const updateContact = asyncHandler(async (req, res) => {
     const {id} = req.params;
+    const {phone} = req.body; // Extract phone from req.body
 
     if(!mongoose.Types.ObjectId.isValid(id)){
         res.status(401);
         throw new Error("no such contact");
     }
     
+    const filterPhone = await Contact.findOne({phone});
+    if(filterPhone){
+        res.status(400);
+        throw new Error("already exists");
+    }
+
+
     const updatedContact = await Contact.findByIdAndUpdate(
         id,
         req.body,
         {new: true}
-    )
-    if(updatedContact){
-        res.json(updatedContact)
+    );
+    if(!updatedContact) {
+        res.status(404);
+        throw new Error("Contact not found");
     }
+    res.json(updatedContact);
 })
+
 //@desc Get all contact
 //@route GET /api/contacts
 //access public
