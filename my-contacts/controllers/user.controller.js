@@ -44,17 +44,17 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     const user = await User.findOne({email});
-    const accessToken = await jwt.sign({
-        user: {
-            username: user.username,
-            email: user.email,
-            id: user._id
-        },
-    },
-    process.env.ACCESS_TOKEN_SECCRET,
-    {expiresIn: '1h'}
-    )
     if(user && (await bcrypt.compare(password, user.password))){
+        const accessToken = await jwt.sign({
+            user: {
+                username: user.username,
+                email: user.email,
+                id: user._id
+            }
+        },
+        process.env.ACCESS_TOKEN_SECCRET,
+        {expiresIn: '1h'}
+        )
         res.status(200).json({accessToken})
     }else{
         res.status(401);
