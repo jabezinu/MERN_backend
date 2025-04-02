@@ -1,0 +1,224 @@
+/* Reset and Base Styles */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4; /* Light background */
+    color: #333; /* Dark text */
+    line-height: 1.6;
+    scroll-behavior: smooth;
+}
+
+/* Basic Container */
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+/* Header Styles */
+header {
+    background: #333; /* Dark header */
+    color: #fff; /* Light text */
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: #77aaff 3px solid; /* Accent color */
+}
+
+header a {
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+header ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    float: right;
+    margin-top: 5px;
+}
+
+header li {
+    display: inline;
+    padding: 0 20px 0 20px;
+}
+
+header #branding {
+    float: left;
+}
+
+header #branding h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+header .highlight,
+header .current a {
+    color: #77aaff; /* Accent color */
+    font-weight: bold;
+}
+
+header a:hover {
+    color: #ccc; /* Lighter hover color */
+}
+
+/* Hero Section */
+#hero {
+    min-height: 400px;
+    background: #333 url('../img/showcase.jpg') no-repeat 0 -400px; /* Placeholder image */
+    background-size: cover;
+    text-align: center;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#hero h1 {
+    margin-top: 0;
+    font-size: 55px;
+    margin-bottom: 10px;
+}
+
+#hero p {
+    font-size: 20px;
+}
+
+/* Section Styling */
+section {
+    padding: 40px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 32px;
+    color: #333;
+}
+
+/* Project Showcase */
+#projects .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.project-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.project-item:hover {
+    transform: translateY(-5px);
+}
+
+.project-item h3 {
+    margin-top: 0;
+    color: #77aaff;
+}
+
+.project-item p strong {
+    display: block;
+    margin-top: 10px;
+    color: #555;
+}
+
+/* About Section */
+#about {
+    background-color: #fff;
+}
+
+/* Contact Section */
+#contact {
+    background-color: #e2e2e2;
+}
+
+#contact form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+}
+
+#contact label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#contact input[type="text"],
+#contact input[type="email"],
+#contact textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+#contact button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #77aaff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#contact button:hover {
+    background: #5588cc;
+}
+
+/* Footer */
+footer {
+    padding: 20px;
+    margin-top: 20px;
+    color: #fff;
+    background-color: #333;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media(max-width: 768px) {
+    header #branding,
+    header nav,
+    header nav li {
+        float: none;
+        text-align: center;
+        width: 100%;
+    }
+
+    header {
+        padding-bottom: 20px;
+    }
+
+    #hero h1 {
+        font-size: 40px;
+    }
+
+    #hero p {
+        font-size: 18px;
+    }
+
+    .container {
+        width: 90%;
+    }
+
+    #projects .project-grid {
+        grid-template-columns: 1fr; /* Stack projects on smaller screens */
+    }
+} 
