@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jabez Shiferaw | Full Stack Developer</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=1.0.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -24,7 +24,16 @@
     <nav>
         <div class="container">
             <div class="logo">
-                <span>Jabez Shiferaw</span>
+            </div>
+            <div class="nav-toggle-container">
+                <div class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon theme-toggle-icon" id="themeIcon"></i>
+                </div>
+                <div class="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
             </div>
             <div class="nav-links">
                 <a href="#home" class="nav-link active">Home</a>
@@ -32,14 +41,6 @@
                 <a href="#skills" class="nav-link">Skills</a>
                 <a href="#projects" class="nav-link">Projects</a>
                 <a href="#contact" class="nav-link">Contact</a>
-            </div>
-            <div class="theme-toggle" id="themeToggle">
-                <i class="fas fa-moon theme-toggle-icon" id="themeIcon"></i>
-            </div>
-            <div class="hamburger">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
             </div>
         </div>
     </nav>
@@ -66,7 +67,9 @@
         </div>
         <div class="scroll-down">
             <span>Scroll Down</span>
-            <i class="fas fa-chevron-down"></i>
+            <div class="scroll-icon-container">
+                <div class="scroll-dot"></div>
+            </div>
         </div>
     </section>
 
@@ -80,7 +83,7 @@
             <div class="about-content">
                 <div class="about-image" data-aos="fade-right">
                     <div class="image-container">
-                        <img src="https://via.placeholder.com/400x500" alt="Jabez Shiferaw">
+                        <img src="images/profile.jpg" alt="Jabez Shiferaw">
                         <div class="image-overlay"></div>
                     </div>
                 </div>
@@ -473,8 +476,11 @@
         <i class="fas fa-arrow-up"></i>
     </a>
 
-    <!-- JavaScript -->
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- AOS Animation Library -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Custom JavaScript -->
     <script src="js/main.js"></script>
 </body>
 </html> 

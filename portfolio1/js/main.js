@@ -7,6 +7,39 @@ document.addEventListener('DOMContentLoaded', function() {
         easing: 'ease-in-out'
     });
 
+    // Enhanced Scroll Down Functionality
+    const scrollDownBtn = document.querySelector('.scroll-down');
+    const aboutSection = document.getElementById('about');
+    
+    if (scrollDownBtn && aboutSection) {
+        scrollDownBtn.addEventListener('click', () => {
+            // Smooth scroll to About section when clicking the scroll down button
+            aboutSection.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+        
+        // Add hover effect with mouse movement
+        scrollDownBtn.addEventListener('mousemove', (e) => {
+            const rect = scrollDownBtn.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calculate the tilt based on mouse position
+            const tiltX = (y / rect.height - 0.5) * 10;
+            const tiltY = (x / rect.width - 0.5) * -10;
+            
+            // Apply the tilt effect
+            scrollDownBtn.style.transform = `translateX(-50%) perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        });
+        
+        // Reset tilt when mouse leaves
+        scrollDownBtn.addEventListener('mouseleave', () => {
+            scrollDownBtn.style.transform = 'translateX(-50%)';
+        });
+    }
+
     // Theme Toggle Functionality
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
@@ -47,6 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectCards = document.querySelectorAll('.project-card');
     const contactForm = document.getElementById('contactForm');
     const sections = document.querySelectorAll('section');
+    
+    // Add index attribute to each nav link for animation
+    navItems.forEach((item, index) => {
+        item.style.setProperty('--i', index + 1);
+    });
     
     // Typing Animation for Hero
     const typingText = document.querySelector('.typing-text');
@@ -128,34 +166,75 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Navbar Scroll Effect
+    // Navbar Scroll Effect with improved performance
+    let lastScrollTop = 0;
+    let ticking = false;
+    
     window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            nav.classList.add('scrolled');
-            backToTop.classList.add('visible');
-        } else {
-            nav.classList.remove('scrolled');
-            backToTop.classList.remove('visible');
+        const scrollTop = window.scrollY;
+        
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                if (scrollTop > 50) {
+                    nav.classList.add('scrolled');
+                    backToTop.classList.add('visible');
+                } else {
+                    nav.classList.remove('scrolled');
+                    backToTop.classList.remove('visible');
+                }
+                
+                // Highlight Active Nav Link based on scroll position
+                highlightNavOnScroll();
+                
+                ticking = false;
+            });
+            
+            ticking = true;
         }
         
-        // Highlight Active Nav Link based on scroll position
-        highlightNavOnScroll();
+        lastScrollTop = scrollTop;
     });
     
-    // Toggle navigation menu
+    // Toggle navigation menu with improved animations
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         navLinks.classList.toggle('active');
-        document.body.classList.toggle('nav-open'); // Add this class to prevent scrolling when menu is open
+        body.classList.toggle('nav-open');
+        
+        // Reset animation for nav items when menu opens
+        if (navLinks.classList.contains('active')) {
+            navItems.forEach(item => {
+                item.style.opacity = "0";
+                // Trigger reflow to restart animation
+                void item.offsetWidth;
+            });
+            // Delay slightly to ensure animations restart properly
+            setTimeout(() => {
+                navItems.forEach(item => {
+                    item.style.opacity = "";
+                });
+            }, 10);
+        }
     });
     
-    // Close navigation menu when clicking on a link
-    navItems.forEach(link => {
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             hamburger.classList.remove('active');
             navLinks.classList.remove('active');
-            document.body.classList.remove('nav-open');
+            body.classList.remove('nav-open');
         });
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (navLinks.classList.contains('active') && 
+            !hamburger.contains(e.target) && 
+            !navLinks.contains(e.target)) {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            body.classList.remove('nav-open');
+        }
     });
     
     // Highlight Nav Link on Scroll
@@ -179,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Project Filtering
+    // Project Filtering with smoother transitions
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             // Remove active class from all buttons
@@ -192,6 +271,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Show/hide projects based on filter
             projectCards.forEach(card => {
+                // Prepare all cards for transition
+                card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                
                 if (filter === 'all') {
                     card.style.display = 'block';
                     
@@ -199,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         card.style.opacity = '1';
                         card.style.transform = 'translateY(0)';
-                    }, 100);
+                    }, 50);
                 } else if (card.getAttribute('data-category') === filter) {
                     card.style.display = 'block';
                     
@@ -207,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         card.style.opacity = '1';
                         card.style.transform = 'translateY(0)';
-                    }, 100);
+                    }, 50);
                 } else {
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(20px)';
@@ -221,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Smooth Scrolling for Nav Links and Back to Top
+    // Smooth Scrolling for Nav Links and Back to Top with better handling of mobile
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -233,8 +315,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetElement = document.querySelector(targetId);
             
             if (targetElement) {
+                // For mobile, adjust scroll offset based on screen size
+                const offset = window.innerWidth <= 768 ? 60 : 70;
+                
                 window.scrollTo({
-                    top: targetElement.offsetTop - 70,
+                    top: targetElement.offsetTop - offset,
                     behavior: 'smooth'
                 });
             }
@@ -284,7 +369,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
                 
                 // Send email using EmailJS
-                // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your actual EmailJS IDs
                 emailjs.send('service_aifc615', 'template_28cuieu', templateParams)
                     .then(function(response) {
                         console.log('SUCCESS!', response.status, response.text);
@@ -338,15 +422,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Parallax effect on scroll for home section
-    window.addEventListener('scroll', function() {
-        const homeSection = document.querySelector('#home');
-        const scrollPosition = window.scrollY;
-        
-        if (scrollPosition < homeSection.offsetHeight) {
-            homeSection.style.backgroundPositionY = `${scrollPosition * 0.5}px`;
-        }
-    });
+    // Parallax effect on scroll for home section with improved performance
+    const homeSection = document.querySelector('#home');
+    let parallaxTicking = false;
+    
+    if (homeSection && window.innerWidth > 768) {
+        window.addEventListener('scroll', function() {
+            if (!parallaxTicking) {
+                window.requestAnimationFrame(function() {
+                    const scrollPosition = window.scrollY;
+                    if (scrollPosition < homeSection.offsetHeight) {
+                        homeSection.style.backgroundPositionY = `${scrollPosition * 0.5}px`;
+                    }
+                    parallaxTicking = false;
+                });
+                parallaxTicking = true;
+            }
+        });
+    }
     
     // Skills Animation - Trigger when in view
     const progressBars = document.querySelectorAll('.progress');
@@ -378,6 +471,25 @@ document.addEventListener('DOMContentLoaded', function() {
     if (skillsSection) {
         skillsObserver.observe(skillsSection);
     }
+    
+    // Detect orientation change and adjust UI accordingly
+    window.addEventListener('orientationchange', function() {
+        // Wait for orientation change to complete
+        setTimeout(function() {
+            // Reset any fixed positioning that might cause issues
+            if (navLinks.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                body.classList.remove('nav-open');
+            }
+            
+            // Recalculate any height-based elements if needed
+            // ...
+            
+            // Re-initialize AOS animations
+            AOS.refresh();
+        }, 200);
+    });
     
     // Navbar active state - highlight nav link of current section
     highlightNavOnScroll();
