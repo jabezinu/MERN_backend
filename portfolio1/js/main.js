@@ -7,6 +7,34 @@ document.addEventListener('DOMContentLoaded', function() {
         easing: 'ease-in-out'
     });
 
+    // Theme Toggle Functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    
+    // Check for saved theme preference or use system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Apply saved theme or system preference
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        document.body.classList.add('dark-mode');
+        themeIcon.classList.replace('fa-moon', 'fa-sun');
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        
+        // Toggle icon
+        if (document.body.classList.contains('dark-mode')) {
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
     // DOM Elements
     const body = document.body;
     const nav = document.querySelector('nav');
@@ -114,34 +142,19 @@ document.addEventListener('DOMContentLoaded', function() {
         highlightNavOnScroll();
     });
     
-    // Mobile Navigation Toggle
-    hamburger.addEventListener('click', function() {
-        navLinks.classList.toggle('active');
-        
-        // Animate hamburger
+    // Toggle navigation menu
+    hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
-        
-        // If hamburger is active, transform to X
-        if (hamburger.classList.contains('active')) {
-            hamburger.querySelector('.line:nth-child(1)').style.transform = 'rotate(45deg) translate(5px, 5px)';
-            hamburger.querySelector('.line:nth-child(2)').style.opacity = '0';
-            hamburger.querySelector('.line:nth-child(3)').style.transform = 'rotate(-45deg) translate(7px, -6px)';
-        } else {
-            hamburger.querySelector('.line:nth-child(1)').style.transform = 'none';
-            hamburger.querySelector('.line:nth-child(2)').style.opacity = '1';
-            hamburger.querySelector('.line:nth-child(3)').style.transform = 'none';
-        }
+        navLinks.classList.toggle('active');
+        document.body.classList.toggle('nav-open'); // Add this class to prevent scrolling when menu is open
     });
     
-    // Close mobile menu when clicking a nav link
-    navItems.forEach(item => {
-        item.addEventListener('click', function() {
-            navLinks.classList.remove('active');
+    // Close navigation menu when clicking on a link
+    navItems.forEach(link => {
+        link.addEventListener('click', () => {
             hamburger.classList.remove('active');
-            
-            hamburger.querySelector('.line:nth-child(1)').style.transform = 'none';
-            hamburger.querySelector('.line:nth-child(2)').style.opacity = '1';
-            hamburger.querySelector('.line:nth-child(3)').style.transform = 'none';
+            navLinks.classList.remove('active');
+            document.body.classList.remove('nav-open');
         });
     });
     
