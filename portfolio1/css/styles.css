@@ -234,15 +234,24 @@ nav {
     padding: 1.5rem 0;
     z-index: 100;
     transition: all 0.3s ease;
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
 
+body.dark-mode nav {
+    background-color: rgba(17, 24, 39, 0.5);
+}
+
 nav.scrolled {
     padding: 1rem 0;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.7);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode nav.scrolled {
+    background-color: rgba(17, 24, 39, 0.7);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 nav .container {
@@ -347,6 +356,12 @@ nav .container {
         right: 2rem;
     }
 
+    .theme-toggle {
+        position: absolute;
+        top: 1.5rem;
+        right: 5rem;
+    }
+
     .nav-links {
         position: fixed;
         top: 0;
@@ -364,6 +379,11 @@ nav .container {
         padding: 2rem;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
+    }
+
+    body.dark-mode .nav-links {
+        background-color: rgba(17, 24, 39, 0.95);
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
     }
 
     .nav-links.active {
@@ -1132,10 +1152,10 @@ body.nav-open {
 
 /* ======= THEME TOGGLE ======= */
 .theme-toggle {
-    position: relative;
+    position: absolute;
+    right: 2rem;
     display: flex;
     align-items: center;
-    margin-left: var(--spacing-md);
     cursor: pointer;
 }
 
