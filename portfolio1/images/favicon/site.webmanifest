@@ -1,0 +1,14 @@
+{
+  "name": "Jabez Shiferaw | Full Stack Developer",
+  "short_name": "Jabez Shiferaw",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#e0f2fe",
+  "background_color": "#ede9fe",
+  "display": "standalone"
+}
