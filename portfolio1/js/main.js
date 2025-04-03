@@ -54,8 +54,20 @@ document.addEventListener('DOMContentLoaded', function() {
         themeIcon.classList.replace('fa-moon', 'fa-sun');
     }
     
-    // Toggle theme on button click
+    // Toggle theme on button click with enhanced animation
     themeToggle.addEventListener('click', () => {
+        // Add a temporary pulse animation class
+        themeToggle.classList.add('pulse-animation');
+        
+        // Use GSAP for smoother animation if available
+        if (typeof gsap !== 'undefined') {
+            gsap.to(themeIcon, {
+                rotation: document.body.classList.contains('dark-mode') ? 0 : 360,
+                duration: 0.5,
+                ease: "back.out(1.7)"
+            });
+        }
+        
         document.body.classList.toggle('dark-mode');
         
         // Toggle icon
@@ -66,6 +78,11 @@ document.addEventListener('DOMContentLoaded', function() {
             themeIcon.classList.replace('fa-sun', 'fa-moon');
             localStorage.setItem('theme', 'light');
         }
+        
+        // Remove the animation class after animation completes
+        setTimeout(() => {
+            themeToggle.classList.remove('pulse-animation');
+        }, 500);
     });
 
     // DOM Elements
